@@ -12,10 +12,10 @@ names = ""      # 여러개의 name 들을 저장하는 문자열 변수.
 
 def nameCreate() :
     name = input("이름을 입력해주세요. \n")
-    return names + " " + name
+    return names + "," + name
 
 def nameRead() :
-    return print(names.split(" "))
+    return print(names.split(","))
 
 def nameUpdate() :
     name = input("수정할 이름을 입력해주세요. \n")
