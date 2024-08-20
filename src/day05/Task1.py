@@ -19,7 +19,7 @@ def nameRead() :
 
 def nameUpdate() :
     name = input("수정할 이름을 입력해주세요. \n")
-    if names.count(name) :
+    if names.count(name) >= 1 :
         newName = input("새로운 이름을 입력해주세요. \n")
         return names.replace(name,newName)
     return
