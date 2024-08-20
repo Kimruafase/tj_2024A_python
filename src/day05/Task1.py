@@ -8,6 +8,8 @@ from os.path import split
 #           3. 수정할 이름과 새로운 이름을 입력받아 수정
 #           4. 삭제할 이름을 입력받아 존재하면 삭제
 
+# 하나의 변수에 여러가지 정보를 담을 때 ","로 구분해서 담는다. 주로 CSV 파일 방식
+
 names = ""      # 여러개의 name 들을 저장하는 문자열 변수.
 
 def nameCreate() :
@@ -15,7 +17,7 @@ def nameCreate() :
     return names + "," + name
 
 def nameRead() :
-    return print(names.split(","))
+    return print(names.split(","))  # 문자열 내 "," 기준으로 분해
 
 def nameUpdate() :
     name = input("수정할 이름을 입력해주세요. \n")
