@@ -8,7 +8,7 @@ from os.path import split
 #           3. 수정할 이름과 새로운 이름을 입력받아 수정
 #           4. 삭제할 이름을 입력받아 존재하면 삭제
 
-names = "kim"      # 여러개의 name 들을 저장하는 문자열 변수.
+names = ""      # 여러개의 name 들을 저장하는 문자열 변수.
 
 def nameCreate() :
     name = input("이름을 입력해주세요. \n")
