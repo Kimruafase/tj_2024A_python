@@ -26,17 +26,17 @@ def nameRead() :
 def nameUpdate() :
     oldName = input("수정할 이름을 입력해주세요. \n")
     for name in names :
-        if oldName in name.get("name") :
-            newName = input("새로운 이름을 입력해주세요. \n")
-            name["name"] = newName
+        if oldName in name.get("name") : # 만약 name.get("name") 통해 나온 value 가 oldName 이 포함된다면
+            newName = input("새로운 이름을 입력해주세요. \n")   # 새로운 이름을 입력받아서
+            name["name"] = newName                         # 그 부분에 해당하는 key 의 value 에 새로운 이름을 대입
             return names
     return
 
 def nameDelete() :
     deleteName = input("삭제할 이름을 입력해주세요. \n")
     for name in names :
-        if deleteName in name.get("name") :
-            names.remove(name)
+        if deleteName in name.get("name") : # 만약 name.get("name") 통해 나온 value 가 deleteName 이 포함된다면
+            names.remove(name)              # 그에 해당하는 리스트의 요소를 삭제
             return names
     return
 
