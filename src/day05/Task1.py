@@ -28,7 +28,7 @@ def nameUpdate() :
 
 def nameDelete() :
     name = input("삭제할 이름을 입력해주세요. \n")
-    if names.count(name):
+    if names.count(name) >= 1:
         return names.replace(name, "").strip()
     return
 
