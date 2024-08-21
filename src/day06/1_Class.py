@@ -81,3 +81,4 @@ print(var2.과자재료2)       # 치즈
 # print(var3)
 var2.과자재료1 = "녹차"
 print(var2.과자재료1)       # 녹차
+#####
