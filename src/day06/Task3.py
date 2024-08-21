@@ -22,7 +22,6 @@ def nameCreate() :
 def nameRead() :
     for name in names :
         print(f"name : {name}")
-
     return
 
 def nameUpdate() :
