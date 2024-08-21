@@ -1,5 +1,5 @@
 # Task2.py
-
+from itertools import count
 
 # 함수 정의, def 함수명(매개변수, 매개변수) :
 
@@ -28,22 +28,26 @@ def nameUpdate() :
     global names
     oldName = input("수정할 이름을 입력해주세요 \n")
     nameList = list(names)
-    if nameList.index(oldName) >= 1 :
+    if oldName in nameList :
         newName = input("새로운 이름을 입력해주세요. \n")
         nameList[nameList.index(oldName)] = newName
         names = tuple(nameList)
         return names
-    return
+    else :
+       return
+
 
 def nameDelete() :
     global names
     deleteName = input("수정할 이름을 입력해주세요 \n")
     nameList = list(names)
-    if nameList.index(deleteName) >= 1:
+    if deleteName in nameList :
         nameList.pop(nameList.index(deleteName))
         names = tuple(nameList)
         return names
-    return
+    else :
+       return
+
 
 while True :    # 무한 루프 # {} 대신 : 과 들여쓰기(tab)을 사용해서 구분 # True 소문자가 아니고 대문자로 해야함
     # int() : 문자열 타입 -> 정수형 타입 반환 함수
