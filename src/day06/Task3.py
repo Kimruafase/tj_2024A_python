@@ -1,5 +1,4 @@
-# Task2.py
-from itertools import count
+# Task3.py
 
 # 함수 정의, def 함수명(매개변수, 매개변수) :
 
