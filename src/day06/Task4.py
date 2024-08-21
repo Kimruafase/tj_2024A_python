@@ -20,7 +20,10 @@ def nameCreate() :
     return names
 
 def nameRead() :
-    return  print(names)
+    nameList = list(names.values())
+    for name in nameList :
+        print(f"name : {name}")
+    return
 
 def nameUpdate() :
     oldName = input("수정할 이름을 입력해주세요. \n")

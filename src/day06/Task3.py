@@ -20,7 +20,10 @@ def nameCreate() :
     return names + name
 
 def nameRead() :
-    return  print(names)
+    for name in names :
+        print(f"name : {name}")
+
+    return
 
 def nameUpdate() :
     global names
