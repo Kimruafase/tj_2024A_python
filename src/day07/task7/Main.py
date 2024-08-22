@@ -1,23 +1,9 @@
-# Task6.py
+# day07 > task7 > Main.py
 
-
-# 함수 정의, def 함수명(매개변수, 매개변수) :
+from User import Name
 
 # 전역 변수
 names = []  # 샘플 데이터
-    # 하나의 변수에 여러개의 이름을 저장하는 방법
-    # 변수란? 하나의 자료에 저장하는 메모리 공간
-    # 하나의 자료에 여러가지 속성을 담는 방법 : 1. 객체 2. JSON, CSV 형식의 문자열 3. 리스트 4. 튜플
-        # 타입(자료 분류) vs 형식(자료 모양)
-        # "10" : 문자열 타입, 숫자 형식
-        # 10   : 정수 타입, 숫자 형식
-        # "{key : value}" : 문자열 타입, JSON 형식
-        # {key : value}   : JSON or 딕셔너리 타입, JSON or 딕셔너리 형식
-    # CSV 란? 몇 가지 필드를 쉼표(",")로 구분한 텍스트
-class Name :
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
 
 def nameCreate() :
     name = input("이름을 입력해주세요.\n")
@@ -26,17 +12,13 @@ def nameCreate() :
     return names.append(new)
 
 def nameRead() :
-    print(names)
     for i in names :
-        print(i)
         print(f"name : {i.name}, age : {i.age}")
     return
 
 def nameUpdate() :
     oldName = input("수정할 이름을 입력해주세요.\n")
     for i in names :
-        print( i )
-        print( i.name )
         if oldName == i.name :
             newName = input("새로운 이름을 입력해주세요.\n")
             newAge = input("새로운 나이를 입력해주세요.\n")
