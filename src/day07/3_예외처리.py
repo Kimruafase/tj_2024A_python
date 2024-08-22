@@ -34,9 +34,9 @@ except IndexError as e :
 finally:
     print("예외 처리와 상관 없이 실행")
 
-# [5] 다중 except
+# [5] 다중 except, 다중 except 중 1번 또는 0번 실행된다.
 try :
-    # list[3]
+    # list[3]           # try 안에서 예외가 발생하면 그 아래 코드는 실행되지 않는다. 그러므로 예외처리는 1번 or 0번 발생한다.
     # list[2]
     # print(4/0)
     int("a")
