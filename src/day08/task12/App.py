@@ -17,7 +17,7 @@ class apartment():
         self.거래금액 = 거래금액
         self.층 = 층
 
-@app.route("/", methods=["GET"])
+
 def load() :
     list = []
     f = open("아파트(매매)_실거래가_20240823153532.csv", "r")  # 파일 읽기 모드
@@ -47,6 +47,11 @@ def condition2() :
     return list2
 
 # print(condition2())
+
+@app.route("/", methods=["GET"])
+def index() :
+    data = load()
+    return data
 
 if __name__ == "__main__" : # 6. Flask 실행
     app.run(debug=True)
