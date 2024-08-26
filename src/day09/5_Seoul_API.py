@@ -30,9 +30,9 @@ def getSuggestionItem(start, end,search) :
     parameter = f"{key}/json/ChunmanFreeSuggestions"    # 인증키 포함한 url
     parameter += f"/{start}"                            # 시작 페이징 번호 포함 url
     parameter += f"/{end}"                              # 끝 페이징 번호 포함 url
-    parameter += f"/{urllib.parse.quote(search)}"
+    parameter += f"/{urllib.parse.quote(search)}"       # 찾고 싶은 정보 포함 url
 
-    url = base + parameter  # url 예시 : http://openAPI.seoul.go.kr:8088/(인증키)/xml/ChunmanFreeSuggestions/1/5
+    url = base + parameter  # url 예시 : http://openAPI.seoul.go.kr:8088/(인증키)/xml/ChunmanFreeSuggestions/1/5/내가 찾고 싶은 정보
     print(f"url : {url}")
 
     responseDecode = getRequestUrl(url)  # 4. url 요청 후 응답 객체 받기
@@ -47,7 +47,7 @@ def getSuggestionItem(start, end,search) :
 def getSuggestionService(start,end,search) :
     jsonResult = []                             # jsondata 담을 리스트 선언
 
-    jsonData = getSuggestionItem(start, end,search)    # 페이징 첫 번호와 끝 번호 보내서 json 데이터 받아옴
+    jsonData = getSuggestionItem(start, end,search)    # 페이징 첫 번호와 끝 번호, 찾고 싶은 정보 보내서 json 데이터 받아옴
     if jsonData != None :                       # 만약 데이터가 존재한다면
         print(jsonData)
         for item in jsonData['ChunmanFreeSuggestions']['row'] : # 데이터의 ChunmanFreeSuggestions 안에 리스트 row 의 반복변수 item 만큼 반복
