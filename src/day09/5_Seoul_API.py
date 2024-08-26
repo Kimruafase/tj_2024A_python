@@ -20,15 +20,16 @@ def getRequestUrl(url) :
         if response.getcode() == 200:
             return response.read().decode("utf-8")
     except Exception as e:
+        print(e)
         return None
 
 def getSuggestionItem(start, end) :
     # 기본 URL
     base = "http://openapi.seoul.go.kr:8088/"
 
-    parameter = f"{key}/json/ChunmanFreeSuggestions"
-    parameter += f"/{start}"
-    parameter += f"/{end}"
+    parameter = f"{key}/json/ChunmanFreeSuggestions"    # 인증키 포함한 url
+    parameter += f"/{start}"                            # 시작 페이징 번호 포함 url
+    parameter += f"/{end}"                              # 끝 페이징 번호 포함 url
 
     url = base + parameter  # url 예시 : http://openAPI.seoul.go.kr:8088/(인증키)/xml/ChunmanFreeSuggestions/1/5
     print(f"url : {url}")
@@ -43,15 +44,14 @@ def getSuggestionItem(start, end) :
 
 
 def getSuggestionService(start,end) :
-    jsonResult = []
-    isDataEnd = 0
+    jsonResult = []                             # jsondata 담을 리스트 선언
 
     jsonData = getSuggestionItem(start, end)    # 페이징 첫 번호와 끝 번호 보내서 json 데이터 받아옴
     if jsonData != None :                       # 만약 데이터가 존재한다면
         print(jsonData)
         for item in jsonData['ChunmanFreeSuggestions']['row'] : # 데이터의 ChunmanFreeSuggestions 안에 리스트 row 의 반복변수 item 만큼 반복
             print( item )
-            num = item["SN"]                                    # 데이터 추출해서 가져옴
+            num = item["SN"]                                    # 데이터 각각 추출해서 가져옴
             title = item["TITLE"]
             content = item["CONTENT"]
             score = item["VOTE_SCORE"]
