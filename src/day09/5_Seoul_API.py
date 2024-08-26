@@ -23,13 +23,14 @@ def getRequestUrl(url) :
         print(e)
         return None
 
-def getSuggestionItem(start, end) :
+def getSuggestionItem(start, end,search) :
     # 기본 URL
     base = "http://openapi.seoul.go.kr:8088/"
 
     parameter = f"{key}/json/ChunmanFreeSuggestions"    # 인증키 포함한 url
     parameter += f"/{start}"                            # 시작 페이징 번호 포함 url
     parameter += f"/{end}"                              # 끝 페이징 번호 포함 url
+    parameter += f"/{urllib.parse.quote(search)}"
 
     url = base + parameter  # url 예시 : http://openAPI.seoul.go.kr:8088/(인증키)/xml/ChunmanFreeSuggestions/1/5
     print(f"url : {url}")
@@ -43,10 +44,10 @@ def getSuggestionItem(start, end) :
         # JS : JSON.parse() -> JSON 형식 -> JS 형식 변환, JSON.stringfy() -> JS 형식 -> JSON 형식(문자열 타입) 변환
 
 
-def getSuggestionService(start,end) :
+def getSuggestionService(start,end,search) :
     jsonResult = []                             # jsondata 담을 리스트 선언
 
-    jsonData = getSuggestionItem(start, end)    # 페이징 첫 번호와 끝 번호 보내서 json 데이터 받아옴
+    jsonData = getSuggestionItem(start, end,search)    # 페이징 첫 번호와 끝 번호 보내서 json 데이터 받아옴
     if jsonData != None :                       # 만약 데이터가 존재한다면
         print(jsonData)
         for item in jsonData['ChunmanFreeSuggestions']['row'] : # 데이터의 ChunmanFreeSuggestions 안에 리스트 row 의 반복변수 item 만큼 반복
@@ -69,14 +70,15 @@ def getSuggestionService(start,end) :
 
 def main() :
     # api 서비스 이용 요청 시 필요한 데이터 값 입력받기
+    search = input("찾고 싶은 정보를 입력해주세요. \n")
     start = int(input("페이징 첫 번호를 입력해주세요. \n"))
     end = int(input("페이징 마지막 번호를 입력해주세요. \n"))
 
     jsonResult = []  # 1. 수집할 데이터를 저장할 리스트 객체
-    jsonResult = getSuggestionService(start,end)
+    jsonResult = getSuggestionService(start,end,search)
     print(jsonResult)  # 확인용
 
-    with open(f"ChunmanFreeSuggestion__{start}__{end}.json","w",encoding="utf-8") as file :
+    with open(f"{search}_검색_결과__{start}__{end}.json","w",encoding="utf-8") as file :
         jsonFile = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
         file.write(jsonFile)
 
