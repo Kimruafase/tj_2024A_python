@@ -28,18 +28,26 @@ def QooQoo_store(result) :
         # print(tbody)
         tr = tbody.select("tr")
         for row in tr :
-            if len(row) < 5 :
+            tds = row.select("td")
+            # print(tds)
+            if len( tds ) <= 1 :
                 continue
-            tds = row.select("td")[0].stripped_strings
-            print(tds)
+            #print( tds )
+            num = tds[0].string.strip()
+            name = tds[1].select('a')[1].string.strip()
+            phone = tds[2].select_one('a').string.strip()
+            address = tds[3].select_one('a').string.strip()
+            time = tds[4].select_one('a').string.strip()
+            #print( name )
+            result.append([num, name, phone, address, time])
             # num = tds[0].text
             # print(num)
 
 
             # print(row)
         # print(tr)
-        n += 1
-        print(n)
+        #n += 1
+        #print(n)
         # tr = tbody.select("tr")
         # print(tr)
         # print()
@@ -72,6 +80,10 @@ def main() :
     print("QooQoo store crawling >>>>>>>>>>>>>>>>>>>")
     QooQoo_store(result)
     print(result)
+    QooQoo_tb1 = pd.DataFrame(result, columns=("num", "name", "phone", "address", "time"))
+    QooQoo_tb1.to_csv("QooQoo.csv", encoding="cp949",mode= "w", index=True)
+
+
 
 if __name__ == "__main__" :
     main()
