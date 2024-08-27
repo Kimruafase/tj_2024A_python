@@ -13,6 +13,8 @@
 from bs4 import BeautifulSoup
 import urllib.request
 import pandas as pd
+from flask import Flask# 1. 플라스크 모듈 가져오기
+from flask_cors import CORS # 3. CORS 모듈 가져오기
 
 def QooQoo_store(result) :
     n = 0
@@ -37,9 +39,11 @@ def QooQoo_store(result) :
             name = tds[1].select('a')[1].string.strip()
             phone = tds[2].select_one('a').string.strip()
             address = tds[3].select_one('a').string.strip()
-            time = tds[4].select_one('a').string.strip()
+            newName = name.replace(",", " ")
+            newadress = address.replace(",", " ")
+            time = tds[4].select_one('a').string.strip().replace(",", "")
             #print( name )
-            result.append([num, name, phone, address, time])
+            result.append([num, newName, phone, newadress, time])
             # num = tds[0].text
             # print(num)
 
@@ -68,7 +72,7 @@ def QooQoo_store(result) :
         #     name = tds[1].text
         #     print(name)
             # phone = tds[2].string
-            # print(phone)
+            # print(콜)
             # address = tds[3].string
             # print(address)
             # time = tds[4].string
@@ -81,9 +85,36 @@ def main() :
     QooQoo_store(result)
     print(result)
     QooQoo_tb1 = pd.DataFrame(result, columns=("num", "name", "phone", "address", "time"))
-    QooQoo_tb1.to_csv("QooQoo.csv", encoding="cp949",mode= "w", index=True)
+    QooQoo_tb1.to_csv("QooQoo.csv", encoding="cp949",mode= "w", index=False)
 
+app = Flask(__name__)
 
+def load():
+    list =[]
+    f = open("QooQoo.csv","r")
+    next(f)
+    readlines = f.read()
+    rows = readlines.split("\n")
+    for i in rows :
+        if i :
+            cols = i.split(",")
+            dic = {
+                "num" : cols[0],
+                "name" : cols[1],
+                "phone" : cols[2],
+                "address" : cols[3],
+                "time" : cols[4].strip("\"")
+            }
+        list.append(dic)
+    f.close()
+    print(f"리스트는 {list}")
+    return list
+
+@app.route("/qooqoo", methods=["GET"])
+def index() :
+    data = load()
+    return data
 
 if __name__ == "__main__" :
     main()
+    app.run(debug=True)
