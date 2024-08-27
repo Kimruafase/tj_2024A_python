@@ -1,0 +1,77 @@
+# day10 > 5_쿠우쿠우_매장.py
+
+# http://www.qooqoo.co.kr/bbs/board.php?bo_table=storeship
+
+# 1. BeautifulSoup 이용한 쿠우쿠우 전국 매장 정보 크롤링
+# 2. 전국 쿠우쿠우 매장 정보(번호, 매장명, 연락처, 주소, 영업시간)
+# 3. pandas 이용한 csv 파일로 변환
+# 4. Flask 를 이용한 쿠우쿠우 전국 매장 정보를 반환하는 HTTP 매핑 정의
+    # URL : (ip 주소):5000/qooqoo
+    # getMapping
+    # 3번을 통해 생성된 csv 파일을 읽어서 json 형식으로 반환
+
+from bs4 import BeautifulSoup
+import urllib.request
+import pandas as pd
+
+def QooQoo_store(result) :
+    n = 0
+    for page in range(1,7) :
+        url = f"http://www.qooqoo.co.kr/bbs/board.php?bo_table=storeship&&page={page}"
+        resp = urllib.request.urlopen(url)
+        htmlData = resp.read()
+        soup = BeautifulSoup(htmlData, "html.parser")
+        # print(soup)
+        tbody = soup.select_one("tbody")
+        if not tbody:
+            continue
+        # print(tbody)
+        tr = tbody.select("tr")
+        for row in tr :
+            if len(row) < 5 :
+                continue
+            tds = row.select("td")[0].stripped_strings
+            print(tds)
+            # num = tds[0].text
+            # print(num)
+
+
+            # print(row)
+        # print(tr)
+        n += 1
+        print(n)
+        # tr = tbody.select("tr")
+        # print(tr)
+        # print()
+        # print(tr[0])
+        # print(tr[0].text)
+
+
+        # for i in tr :
+        #     print(i.select_one(".td-num").text)
+        #     n += 1
+        # print(tr[1])
+        # for row in tbody.select("tr") :
+        #     # print(row)
+        #     tds = row.select("td")
+        #     print(tds)
+        #     num = tds[0].text
+        #     print(num)
+        #     name = tds[1].text
+        #     print(name)
+            # phone = tds[2].string
+            # print(phone)
+            # address = tds[3].string
+            # print(address)
+            # time = tds[4].string
+            # print(time)
+
+
+def main() :
+    result = []
+    print("QooQoo store crawling >>>>>>>>>>>>>>>>>>>")
+    QooQoo_store(result)
+    print(result)
+
+if __name__ == "__main__" :
+    main()
