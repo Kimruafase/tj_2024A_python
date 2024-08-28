@@ -22,6 +22,7 @@ def jobkoreaInfo(result):
         # print(total)
 
         # 페이지 = 전체 게시물 수 / 한 페이지 당 게시물 수, 만약 20으로 나눠서 0으로 떨어지지 않는 다면 + 1 함
+        # math.floor() 함수를 통해 소숫점 무조건 내림 처리함
         pages = math.floor(total / 20 if total % 20 == 0 else total / 20 + 1)
         # 페이지 계산 확인용
         print(pages)
