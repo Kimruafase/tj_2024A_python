@@ -95,7 +95,7 @@ def load():
                 "address" : cols[3],            # 4번째 인덱스에 주소
                 "time" : cols[4].strip("\"")    # 5번째 인덱스에 시간 \"으로 따옴표 제거
             }
-        list.append(dic)                # 생성한 딕셔너리를 리스트에 대입
+            list.append(dic)                # 생성한 딕셔너리를 리스트에 대입
     f.close()                           # 파일 닫기
     print(f"리스트는 {list}")            # 리스트 확인용
     return list                         # 리스트 반환
