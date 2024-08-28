@@ -41,7 +41,7 @@ def QooQoo_store(result) :
             # 리스트의 반복변수 row 의 "td" 마크업 선택해서 tds 리스트에 저장
             tds = row.select("td")
             # print(tds)
-            # "td" 마크업 선택한 변수의 길이가 1 이하라면 가장 최근의 반복문으로 돌아감
+            # "td" 마크업 선택한 변수의 길이가 1 이하라면 가장 최근의 반복문으로 돌아감(모바일 전용 <td> 라고 판단)
             if len( tds ) <= 1 :
                 continue
             #print( tds )
