@@ -15,6 +15,5 @@ def jobkorea():
 
 @app.route('/count', methods=['get'])
 def jobCount():
-    #(1) 만약 크롤링 된 csv 파일이 없거나 최신화 하고 싶을 대
     result=load()
     return result
