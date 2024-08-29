@@ -1,4 +1,4 @@
-# day12 > 4.삼성_주가_시각화.py
+# day12 > 4_삼성_주가_시각화.py
 
 # 실습 1 : 삼성전자의 최근 1년 시세 정보를 CSV 로 다운 받아서 pandas 의 DataFrame 으로 읽어오기
 # CSV 파일을 DataFrame 으로 읽어서 출력

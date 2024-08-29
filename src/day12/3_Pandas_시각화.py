@@ -1,4 +1,4 @@
-# day12 > 3.Pandas_시각화.py
+# day12 > 3_Pandas_시각화.py
 from idlelib.iomenu import encoding
 
 import pandas as pd

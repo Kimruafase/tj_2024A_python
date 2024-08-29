@@ -1,4 +1,4 @@
-# day12 > 1.Selenium.py
+# day12 > 1_Selenium.py
 
 # 1. 모듈 가져오기
 from selenium import webdriver
