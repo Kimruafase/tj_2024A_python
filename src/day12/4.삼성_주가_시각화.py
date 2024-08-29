@@ -26,7 +26,7 @@ x = df["일자"]            # pandas 의 DataFrame 객체의 일자(열)만 x축
 y = df["종가"]            # pandas 의 DataFrame 객체의 종가(열)만 y축으로 사용
 
 # 6. y축 데이터 설정 후 plt.bar 로 바 그래프 설정
-plt.bar(x,y)
+plt.plot(x,y)
 # for i in df.loc[:, '종가'] :
 #     # y축 데이터 확인용
 #     print(i)
