@@ -1,4 +1,6 @@
 # day12 > 3.Pandas_시각화.py
+from idlelib.iomenu import encoding
+
 import pandas as pd
 import matplotlib as plt
 import matplotlib.pyplot as plt
@@ -51,7 +53,7 @@ xLabel = ["first", "second", "third", "fourth"]
 plt.xticks(x, xLabel, fontsize = 10)
 
 # 8. 범례(막대 구문 이름 표시)
-plt.legend(["2015", "2016", "2017", "2018", "2019", "2020"])
+plt.legend(index1)
 
 # 9. 차트 실행
 plt.show()
