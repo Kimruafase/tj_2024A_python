@@ -34,12 +34,8 @@ list2.to_csv("sales.csv", encoding="utf-8", mode="w", index = True)
 x = range(len(a))
 
 # 3. 라인 plot(선 차트)에 x 축과 y 축 지정하여 라인 플롯 형성
-plt.plot(x, a, color="green")
-plt.plot(x, b, color="red")
-plt.plot(x, c, color="blue")
-plt.plot(x, d, color="orange")
-plt.plot(x, e, color="black")
-plt.plot(x, f, color="yellow")
+for i in list1 :
+    plt.plot(x, i)
 
 # 4. 차트 제목 넣기
 plt.title("2015 - 2020 Quarterly Sales")
