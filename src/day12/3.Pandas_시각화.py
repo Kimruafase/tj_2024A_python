@@ -12,19 +12,19 @@ d = [1500, 1650, 1700, 1850]
 e = [1990, 2020, 2300, 2420]
 f = [1020, 1600, 2200, 2550]
 
-# 인덱스 에 넣을 제목 리스트 생성
+# 2. 인덱스 에 넣을 제목 리스트 생성
 index1 = ["2015년", "2016년", "2017년", "2018년", "2019년", "2020년"]
 
-# 각 열에 맞는 제목 리스트 생성
+# 3. 각 열에 맞는 제목 리스트 생성
 columns1 = ["1분기", "2분기", "3분기", "4분기"]
 
-# 2차원 배열 DataFrame 사용하기 위해서 list1 리스트 생성해서 a ~ f 까지 저장
+# 4. 2차원 배열 DataFrame 사용하기 위해서 list1 리스트 생성해서 a ~ f 까지 저장
 list1 = [a,b,c,d,e,f]
 
-# pandas 의 DataFrame 이용해서 행과 열에 제목 정해주고 2차원 배열 생성
+# 5. pandas 의 DataFrame 이용해서 행과 열에 제목 정해주고 2차원 배열 생성
 list2 = pd.DataFrame(list1, columns = columns1, index = index1)
 
-# 생성한 2차원 배열을 csv 파일로 변환
+# 6. 생성한 2차원 배열을 csv 파일로 변환
 list2.to_csv("sales.csv", encoding="utf-8", mode="w", index = True)
 
 # [2] matplotlib 이용해서 차트 만들기
