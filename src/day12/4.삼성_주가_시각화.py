@@ -6,6 +6,7 @@
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.pyplot import xlabel, ylabel
 
 # 1. csv 파일 DataFrame 으로 읽기
     # 주의할 점 : 파일들의 인코딩 방식 -> utf-8, cp949, ISO-8859 등
@@ -18,17 +19,26 @@ print(df)
 print(len(df))
 
 # 4. 바 크기 만들기 위해서 y축 데이터 확인
-print(df.loc[:, '종가'])
+print(df["종가"])
 
-# 5. x축 데이터 설정
-x = range(len(df))
+# 5. x, y축 데이터 설정
+x = df["일자"]            # pandas 의 DataFrame 객체의 일자(열)만 x축으로 사용
+y = df["종가"]            # pandas 의 DataFrame 객체의 종가(열)만 y축으로 사용
 
 # 6. y축 데이터 설정 후 plt.bar 로 바 그래프 설정
-for i in df.loc[:, '종가'] :
-    # y축 데이터 확인용
-    print(i)
-    # 바 그래프 생성
-    plt.bar(x,i)
+plt.bar(x,y)
+# for i in df.loc[:, '종가'] :
+#     # y축 데이터 확인용
+#     print(i)
+#     # 바 그래프 생성
+#     plt.bar(x,i)
+
+# 7. 그래프 제목 설정
+plt.title("Samsung Chart")
+
+# 8. x, y축 제목 설정
+xlabel("date")
+ylabel("closing price")
 
 # 7. 실행
 plt.show()
