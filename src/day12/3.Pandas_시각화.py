@@ -33,7 +33,7 @@ list2.to_csv("sales.csv", encoding="utf-8", mode="w", index = True)
 # 2. x축의 길이를 샘플 데이터의 길이만큼으로 설정
 x = range(len(a))
 
-# 3. 라인 plot(선 차트)에 x 축과 y 축 지정하여 라인 플롯 형성
+# 3. 라인 plot(선 차트)에 x 축과 y 축 지정하여 라인 플롯 형성, list1 의 반복문을 통해서 반복변수 i 를 y축 데이터로 설정함
 for i in list1 :
     plt.plot(x, i)
 
