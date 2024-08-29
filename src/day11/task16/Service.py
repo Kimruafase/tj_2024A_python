@@ -40,7 +40,7 @@ def jobkoreaInfo(result):
                 # print(soup)
                 # 4. 분석한 HTML 식별자들을 파싱, find, findall, select, select_one
                 # 4-1 테이블 전체 파싱
-                # util-total-count 클래스 속성을 갖고 있는 html 마크업에 접근 후 "em" 마크업 접근해서 1번 인덱스의 strimg 값 가져옴
+                # util-total-count 클래스 속성을 갖고 있는 html 마크업에 접근 후 "em" 마크업 접근해서 1번 인덱스의 string 값 가져옴
                 total = soup.select_one('.util-total-count').select('em')[0].string
                 #print(total)
 
