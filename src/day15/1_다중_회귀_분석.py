@@ -4,6 +4,7 @@
 import pandas as pd
 from statsmodels.formula.api import ols
 
+
 data = pd.DataFrame({
     '운동시간': [1, 2, 3, 4, 5, 2, 3, 4, 5, 6,
                 1, 2, 3, 4, 5, 2, 3, 4, 5, 6],
@@ -52,6 +53,3 @@ print(sample_predict)
 2    145.277778
 """
 
-sns.set_style("dark")
-sns.distplot(red_wine_quality, kde = True, color = "red", label = "red wine")
-sns.distplot(white_wine)
