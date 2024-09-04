@@ -28,9 +28,13 @@ data =  pd.read_csv("아파트(매매)_실거래가_20240904134550.csv", encodin
 # 거래금액 : 종속 변수, 층 + 건축년도 : 독립 변수1 + 독립 변수2
 r_formula = "거래금액 ~ 층 + 건축년도"
 
-# ols 메소드로 회귀 분석 진행,
+# ols 메소드로 회귀 분석 진행, 매개변수의 첫번째 인자로 종속 변수와 독립 변수로 구성된 변수를 주고
+# 두번째 인자는 실제 사용할 변수값을 가진 DataFrame 을 지정한다.
+# 완성된 선형회귀 모델은 fit() 함수에 의해 실행되어 regression_result 에 저장된다.
 regression_result = ols(r_formula, data = data).fit()
 regression_result.summary()
+
+# 선형 회귀 분석 결과 출력
 print(regression_result.summary())
 """
                             OLS Regression Results                            
@@ -57,15 +61,24 @@ Skew:                           2.552   Prob(JB):                         0.00
 Kurtosis:                      31.216   Cond. No.                     3.87e+05
 ==============================================================================
 """
-
+# 차트의 크기를 지정
 fig = plt.figure(figsize=(8, 13))
 
+# 다중 선형 회귀 분석 결과를 갖고 있는 regression_result 를 이용해
+# 각 독립 변수의 부분 회귀 플롯을 구한다.
 sm.graphics.plot_partregress_grid(regression_result, fig = fig)
 
+# 차트 확인
 plt.show()
 
+# 연속형 데이터만 가능하므로 연속형 데이터 열만 추출
 data2 = data.select_dtypes(include=[int, float, bool])
+
+# 상관 관계 분석을 위해 DataFrame 에서 corr() 함수 사용
+# pearson(피어슨) 상관 계수를 적용하여 상관 계수를 구한다.
 apart_corr = data2.corr(method="pearson")
+
+# 상관 계수 출력
 print(apart_corr)
 """
                NO        본번        부번  ...      거래금액         층      건축년도
@@ -79,4 +92,6 @@ NO       1.000000  0.010013  0.016562  ... -0.091830 -0.046893 -0.058934
 층       -0.046893 -0.008953 -0.056279  ...  0.403498  1.000000  0.374632
 건축년도    -0.058934  0.240463 -0.133272  ...  0.575204  0.374632  1.000000
 """
+
+# 상관 계수를 csv 파잉로 저장
 apart_corr.to_csv("인천_아파트_상관_계수표.csv", index=True, encoding="cp949")
