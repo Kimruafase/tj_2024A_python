@@ -17,19 +17,27 @@ from statsmodels.iolib.summary import summary
 from wordcloud import STOPWORDS, WordCloud
 from xlrd import xldate
 
+# glob 메소드를 이용해서 문자열 exportExcelData 이 포함된 모든 파일 이름을 저장함
 all_files = glob.glob("exportExcelData*.xls")
 # print(all_files)
 
+# 엑셀파일을 읽어서 담을 리스트 선언
 all_files_data = []
+
+# 엑셀 파일 이름이 담기 리스트를 반복문 돌려서
+# pd.read_excel()로 하나씩 엑셀 파일 읽고
+# 읽은 엑셀 파일을 리스트에 저장
 for file in all_files :
     data_frame = pd.read_excel(file)
     all_files_data.append(data_frame)
 
 # print(all_files_data)
 
+# 전체 읽은 DataFrame을 pd.concat()을 통해 합침
 all_files_data_concat = pd.concat(all_files_data, axis = 0, ignore_index=True)
 # print(all_files_data_concat)
 
+# 합친 DataFrame을 csv 파일로 저장
 all_files_data_concat.to_csv("AI_bigdata.csv", encoding="utf-8",index = False)
 
 title = all_files_data_concat["제목"]
