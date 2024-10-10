@@ -127,6 +127,12 @@ def plot_loss_acc(history, epoch):
 
 # plot_loss_acc(history, 10)
 
+# 훈련된 모델로 예측하기
+print(y_valid[0])   # 종속 변수, 10000개 중에 첫번째 손글씨의 정답, 숫자
+print(tf.argmax(model.predict(x_valid_in)[0]))  # 독립변수, 테스트용 데이터로 예측하기, 이미지된 손글씨
+# tf.Tensor(7, shape=(), dtype=int64)
+# argmax() : 배열 내 가장 큰 값을 가진 요소의 인덱스 반환
+
 # print(model.summary())
 """
 Model: "sequential"
