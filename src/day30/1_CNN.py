@@ -125,13 +125,13 @@ Model: "functional"
 """
 
 # 모델 컴파일
-model.compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics=["accuracy"])
+# model.compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics=["accuracy"])
 
 # 모델 훈련
-history = model.fit(x_train_in, y_train, validation_data = (x_valid_in, y_valid), epochs = 10)
+# history = model.fit(x_train_in, y_train, validation_data = (x_valid_in, y_valid), epochs = 10)
 
 # 모델 성능 평가
-val_loss, val_acc = model.evaluate(x_valid_in, y_valid)
+# val_loss, val_acc = model.evaluate(x_valid_in, y_valid)
 # print(val_loss, val_acc) # 0.0676252618432045 0.9818000197410583
 
 # 다중 분류 출력 모델
@@ -226,3 +226,151 @@ digit_labels = np.argmax(digit_preds, axis = -1)
 
 odd_labels = (odd_preds > 0.5).astype(np.int32).reshape(1, -1)[0]
 # print(odd_labels[0 : 10])   # [1 0 1 0 0 1 0 1 0 1]
+
+
+# day31 > 1_CNN.py
+# 전이학습(transfer learning)
+# layer의 name 속성을 이용한 특정 레이어 추출
+# (1) 기존의 Functional API 로 생성한 모델에서 특정 레이어를 추출해서 새로운 Functional API 모델 생성
+    # 특정 layer와 연결된 layer 까지 추출 => conv <- pooling <- flatten
+base_model_output = model1.get_layer("flatten_layer").output
+
+base_model = tf.keras.models.Model(inputs = model1.input, outputs = base_model_output, name = "base")
+base_model.summary()
+"""
+Model: "base"
+┌─────────────────────────────────┬────────────────────────┬───────────────┐
+│ Layer (type)                    │ Output Shape           │       Param # │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ inputs (InputLayer)             │ (None, 28, 28, 1)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_layer (Conv2D)           │ (None, 26, 26, 32)     │           320 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ maxpool_layer (MaxPooling2D)    │ (None, 13, 13, 32)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ flatten_layer (Flatten)         │ (None, 5408)           │             0 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 320 (1.25 KB)
+ Trainable params: 320 (1.25 KB)
+ Non-trainable params: 0 (0.00 B)
+"""
+
+# (2) 출력 layer를 추가하는 새로은 Sequential API로 모델 생성하기
+digit_model = tf.keras.Sequential([base_model, tf.keras.layers.Dense(10, activation = "softmax")])
+digit_model.summary()
+"""
+Model: "sequential"
+┌─────────────────────────────────┬────────────────────────┬───────────────┐
+│ Layer (type)                    │ Output Shape           │       Param # │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ base (Functional)               │ (None, 5408)           │           320 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense_1 (Dense)                 │ (None, 10)             │        54,090 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 54,410 (212.54 KB)
+ Trainable params: 54,410 (212.54 KB)
+ Non-trainable params: 0 (0.00 B)
+"""
+
+# (3) 모델 컴파일
+digit_model.compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics = ["accuracy"])
+
+# (4) 모델 훈련
+history2 = digit_model.fit(x_train_in, y_train, validation_data = (x_valid_in, y_valid), epochs = 10)
+
+# (5)
+base_model_frozen = tf.keras.models.Model(inputs = model1.input, outputs = base_model_output, name = "base_frozen")
+base_model_frozen.trainable = False # 모델의 파라미터 값이 고정되어 훈련을 통해서 업데이트되지 않음 -> 훈련 X
+base_model_frozen.summary()
+"""
+Model: "base_frozen"
+┌─────────────────────────────────┬────────────────────────┬───────────────┐
+│ Layer (type)                    │ Output Shape           │       Param # │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ inputs (InputLayer)             │ (None, 28, 28, 1)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_layer (Conv2D)           │ (None, 26, 26, 32)     │           320 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ maxpool_layer (MaxPooling2D)    │ (None, 13, 13, 32)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ flatten_layer (Flatten)         │ (None, 5408)           │             0 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 320 (1.25 KB)
+ Trainable params: 0 (0.00 B)
+ Non-trainable params: 320 (1.25 KB)
+"""
+
+# Functional API 적용으로 모델 생성
+dense_output = tf.keras.layers.Dense(10, activation = "softmax")(base_model_frozen.output)
+digit_model_frozen = tf.keras.models.Model(inputs = base_model_frozen.input, outputs = dense_output)
+digit_model_frozen.summary()
+"""
+Model: "functional_3"
+┌─────────────────────────────────┬────────────────────────┬───────────────┐
+│ Layer (type)                    │ Output Shape           │       Param # │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ inputs (InputLayer)             │ (None, 28, 28, 1)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_layer (Conv2D)           │ (None, 26, 26, 32)     │           320 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ maxpool_layer (MaxPooling2D)    │ (None, 13, 13, 32)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ flatten_layer (Flatten)         │ (None, 5408)           │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense_2 (Dense)                 │ (None, 10)             │        54,090 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 54,410 (212.54 KB)
+ Trainable params: 54,090 (211.29 KB)
+ Non-trainable params: 320 (1.25 KB)
+"""
+
+digit_model_frozen.compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics = ["accuracy"])
+history3 = digit_model_frozen.fit(x_train_in, y_train, validation_data = (x_valid_in, y_valid), epochs = 10)
+
+base_model_frozen2 = tf.keras.models.Model(inputs = model1.input, outputs = base_model_output, name = "base_frozen2")
+    # 특정한 layer name 속성을 이용한 layer의 파라미터 값을 고정하고 훈련을 취소함
+base_model_frozen2.get_layer("conv2d_layer").trainable = False
+base_model_frozen2.summary()
+"""
+Model: "base_frozen2"
+┌─────────────────────────────────┬────────────────────────┬───────────────┐
+│ Layer (type)                    │ Output Shape           │       Param # │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ inputs (InputLayer)             │ (None, 28, 28, 1)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_layer (Conv2D)           │ (None, 26, 26, 32)     │           320 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ maxpool_layer (MaxPooling2D)    │ (None, 13, 13, 32)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ flatten_layer (Flatten)         │ (None, 5408)           │             0 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 320 (1.25 KB)
+ Trainable params: 0 (0.00 B)
+ Non-trainable params: 320 (1.25 KB)
+"""
+
+dense_output2 = tf.keras.layers.Dense(10, activation = "softmax")(base_model_frozen2.output)
+digit_model_frozen2 = tf.keras.models.Model(inputs = base_model_frozen2.input, outputs = dense_output2)
+digit_model_frozen2.summary()
+"""
+Model: "functional_4"
+┌─────────────────────────────────┬────────────────────────┬───────────────┐
+│ Layer (type)                    │ Output Shape           │       Param # │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ inputs (InputLayer)             │ (None, 28, 28, 1)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_layer (Conv2D)           │ (None, 26, 26, 32)     │           320 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ maxpool_layer (MaxPooling2D)    │ (None, 13, 13, 32)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ flatten_layer (Flatten)         │ (None, 5408)           │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense_3 (Dense)                 │ (None, 10)             │        54,090 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 54,410 (212.54 KB)
+ Trainable params: 54,090 (211.29 KB)
+ Non-trainable params: 320 (1.25 KB)
+"""
+
+digit_model_frozen2.compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics = ["accuracy"])
+history4 = digit_model_frozen2.fit(x_train_in, y_train, validation_data = (x_valid_in, y_valid), epochs = 10)
