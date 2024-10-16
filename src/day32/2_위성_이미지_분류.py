@@ -125,18 +125,28 @@ valid_data = valid_data.batch(BATCH_SIZE).cache().prefetch(tf.data.AUTOTUNE)
 def build_model():
     # Sequential API를 사용하여 샘플 모델 생성
     model = tf.keras.Sequential([
-        # Convolution 층
+        # Convolution 층 : 합성곱, 연산층, 특징 찾기
+            # Batch : 모델링에 있어서 병렬처리에 배치(묶음) 단위로 처리하면 더 빠르고 안정적으로 학습할 수 있다.
+            # 과대적합을 줄이기가 가능하다.
+            # BatchNormalization() layer 가 없어도 모델 구현이 가능하지만 모델의 최적화에 필요한 layer 이다.
+            # 주로 AUTOTUNE 사용 시 같이 사용된다.
         tf.keras.layers.BatchNormalization(),
         tf.keras.layers.Conv2D(32, (3, 3), padding="same", activation="relu"),
         tf.keras.layers.MaxPooling2D((2, 2)),
 
+            # Convolution layer : 복잡한 신경망을 구현하기 위해 2번의 합성곱을 실행한다.
+            # 1번의 합성곱 연산으로 모델 구축이 가능하지만 더 많은 특징을 찾기 위해 2번의 layer 생성
         tf.keras.layers.BatchNormalization(),
         tf.keras.layers.Conv2D(64, (3, 3), padding="same", activation="relu"),
         tf.keras.layers.MaxPooling2D((2, 2)),
 
-        # Classifier 출력층
+        # Classifier 출력층 : 예측 분류층, 특징 학습
+            # Dense : 완전 연결된 신경망 층, 이전 node(뉴런)를 받아서 패턴을 학습한다.
+            # 주로 노드의 갯수는 32, 64, 128개를 사용한다.
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(128, activation="relu"),
+
+            #
         tf.keras.layers.Dropout(0.3),
         tf.keras.layers.Dense(64, activation="relu"),
         tf.keras.layers.Dropout(0.3),
@@ -153,7 +163,24 @@ model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=
 history = model.fit(train_data, validation_data = valid_data, epochs = 50)
 
 # 손실 함수, 정확도 그래프 그리기
-# plot_loss_acc(history, 50)
+def plot_loss_acc(history, epochs):
+    loss = history.history["loss"]
+    val_loss = history.history["val_loss"]
+    acc = history.history["accuracy"]
+    val_acc = history.history["val_accuracy"]
+
+    # 차트 생성
+    fig, axes = plt.subplots(1, 2)
+
+    axes[0].plot(range(1, epochs + 1), loss)
+    axes[0].plot(range(1, epochs + 1), val_loss)
+
+    axes[1].plot(range(1, epochs + 1), acc)
+    axes[1].plot(range(1, epochs + 1), val_acc)
+
+    plt.show()
+
+plot_loss_acc(history, 50)
 
 # 샘플 이미지
 image_batch, label_batch = next(iter(train_data.take(1)))
@@ -249,7 +276,7 @@ aug_model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metr
 aug_history = aug_model.fit(train_aug, validation_data=valid_aug, epochs=50)
 
 # 손실 함수, 정학도 그래프 그리기
-# plot_loss_acc(aug_history, 50)
+plot_loss_acc(aug_history, 50)
 
 # pre_trained 모델을 사전 학습된 가중치와 함께 가져오기
 pre_trained_base = ResNet50V2(include_top= False, weights= "imagenet", input_shape=[64, 64, 3])
@@ -310,4 +337,4 @@ tc_model.compile(optimizer="adam", loss = "sparse_categorical_crossentropy", met
 tc_history = tc_model.fit(train_aug, validation_data=valid_aug, epochs= 50)
 
 # 손실함수, 정확도 그리기
-# plot_loss_acc(tc_history, 50)
+plot_loss_acc(tc_history, 50)
