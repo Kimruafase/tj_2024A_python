@@ -301,6 +301,31 @@ def build_trainsfer_classifier():
 # 모델 구조
 tc_model = build_trainsfer_classifier()
 tc_model.summary()
+"""
+Model: "sequential_2"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ resnet50v2 (Functional)     (None, 2, 2, 2048)        23564800  
+                                                                 
+ flatten_2 (Flatten)         (None, 8192)              0         
+                                                                 
+ dense_6 (Dense)             (None, 128)               1048704   
+                                                                 
+ dropout_4 (Dropout)         (None, 128)               0         
+                                                                 
+ dense_7 (Dense)             (None, 64)                8256      
+                                                                 
+ dropout_5 (Dropout)         (None, 64)                0         
+                                                                 
+ dense_8 (Dense)             (None, 10)                650       
+                                                                 
+=================================================================
+Total params: 24,622,410
+Trainable params: 1,057,610
+Non-trainable params: 23,564,800
+_________________________________________________________________
+"""
 
 # 모델 컴파일
 tc_model.compile(optimizer="adam", loss = "sparse_categorical_crossentropy", metrics = ["accuracy"])
