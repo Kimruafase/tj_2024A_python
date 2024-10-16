@@ -1,0 +1,38 @@
+> 딥러닝 연산 처리 방법 : 1. cpu 2. gpu
+    > 딥러닝은 대부분 행렬곱(다차원) 연산 이므로 gpu가 효율적이다.
+    > 최소 GTX10xx 이상
+    > 사용방법
+        > 1. 좋은 그래픽카드와 대량의 그래픽카드를 사용(교육, 강의는 한정적)
+        > 2. 코랩 사용(구글 가상 메모리 사용)
+            > 현재는 코랩 대신 pyCharm 사용중
+
+    > TensorFlow GPU 설치
+        > url 주소 : https://www.tensorflow.org/install/source_windows?hl=ko&_gl=1*1rc2e6s*_up*MQ..*_ga*MTc5OTY5OTQxNi4xNzI5MDM5Njk5*_ga_W0YLR4190T*MTcyOTAzOTY5OS4xLjAuMTcyOTAzOTY5OS4wLjAuMA..#cpu
+        > 환경 고려 (현재 환경은 윈도우 환경)
+            > TensorFlow 버전                     Python 버전             cuddn      cuda
+            tensorflow_gpu-2.10.0                   3.7 ~ 3.10            8.1       11.2
+
+        > python 설치
+            > https://www.python.org/downloads/release/python-380/
+            > 하단에서 Windows x86-64 execute installer 설치
+
+        > 파이참에서 파이썬 버전 확인 및 변경
+            > python 3.12 -> 3.8 변경
+            > pycharm 상단 메뉴 -> 파일 -> 설정
+            > [프로젝트] -> python 인터프리터 -> 새 인터프리터 추가
+
+        > cuda 설치(NVIDIA)
+            > https://developer.nvidia.com/cuda-11.2.0-download-archive?target_os=Windows&target_arch=x86_64
+            > Installer Type : [exe local] -> [download 2.9GB]
+
+        > cuDNN 설치
+            > https://developer.nvidia.com/rdp/cudnn-archive
+            > 목록에서 Download cuDNN v8.1.1 for CUDA 11.0, 11.1 and 11.2
+            > cuDNN Library for Windows (x86)
+            > 압축 풀기
+            > [cuda] 설치 후 진행
+                > [bin], [include], [lib] 폴더를 아래 경로에 들어가서 복사 후 붙여넣기
+                    > C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2
+
+        > Tensor GPU 설치
+            > pycharm -> 터미널 (alt + f12) -> pip tensor
