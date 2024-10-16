@@ -16,7 +16,7 @@ import tensorflow_datasets as tfds
 import chardet
 from tensorflow.keras.applications import ResNet50V2
 
-DATA_DTR = "../day31/dataset/"
+DATA_DTR = "c:/doit/dataset/"
 
 (train_ds, valid_ds), info = tfds.load("eurosat/rgb",  # 데이터셋 이름
                                        split=["train[:80%]", "train[80%:]"],  # 80%의 데이터를 훈련용, 20%는 검증용
@@ -25,30 +25,6 @@ DATA_DTR = "../day31/dataset/"
                                        with_info=True,  # 데이터셋의 메타정보(데이터셋 설명) 가져오기 허용
                                        data_dir=DATA_DTR)  # 현재 python 폴더에 하위 폴더로 "dataset" 폴더 안에 데이터셋을 다운로드
 
-
-
-# # 파일 인코딩을 감지
-# with open("dataset/", 'rb') as f:
-#     result = chardet.detect(f.read())
-#     print(result['encoding'])  # 인코딩을 확인
-#
-# # 파일을 올바른 인코딩으로 다시 저장
-# with open('dataset/', 'r', encoding=result['encoding']) as f:
-#     content = f.read()
-#
-# with open('dataset/', 'w', encoding='utf-8') as f:
-#     f.write(content)
-
-# (train_ds, valid_ds), info = tfds.load(
-#     "eurosat/rgb",
-#     split=["train[:80%]", "train[80%:]"],
-#     shuffle_files=True,
-#     as_supervised=True,
-#     with_info=True,
-#     data_dir=DATA_DTR,
-#     download=True,  # 강제로 다시 다운로드
-#     try_gcs=False  # Google Cloud Storage 캐시 사용하지 않음
-# )
 # print(train_ds)
 # <_PrefetchDataset element_spec=(TensorSpec(shape=(64, 64, 3), dtype=tf.uint8, name=None), TensorSpec(shape=(), dtype=tf.int64, name=None))>
 # print(valid_ds)
