@@ -275,10 +275,13 @@ aug_history = aug_model.fit(train_aug, validation_data=valid_aug, epochs=50)
 # 손실 함수, 정학도 그래프 그리기
 # plot_loss_acc(aug_history, 50)
 
+# pre_trained 모델을 사전 학습된 가중치와 함께 가져오기
 pre_trained_base = ResNet50V2(include_top= False, weights= "imagenet", input_shape=[64, 64, 3])
 
+# 사전 학습된 가중치를 업데이트되지 않도록 설정
 pre_trained_base.trainable = False
 
+# Top 층에 Classifier 추가
 def build_trainsfer_classifier():
     model = tf.keras.Sequential([
         # pre_trained Base
@@ -295,9 +298,15 @@ def build_trainsfer_classifier():
 
     return model
 
+# 모델 구조
 tc_model = build_trainsfer_classifier()
 tc_model.summary()
 
+# 모델 컴파일
 tc_model.compile(optimizer="adam", loss = "sparse_categorical_crossentropy", metrics = ["accuracy"])
 
+# 모델 훈련
 tc_history = tc_model.fit(train_aug, validation_data=valid_aug, epochs= 50)
+
+# 손실함수, 정확도 그리기
+# plot_loss_acc(tc_history, 50)
